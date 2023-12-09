@@ -1,7 +1,7 @@
 import argparse
 import os
 
-from whisper import available_models
+from pandas import read_json, Series
 
 from model_evaluator.calculate_metrics import Evaluator
 from model_evaluator.utils import available_models
@@ -22,7 +22,7 @@ def get_parser() -> argparse.ArgumentParser:
         help="Path to directory containing audio files",
     )
     parser.add_argument(
-        "--dataset-path",
+        "--reference-path",
         type=str,
         default="data/reference.xlsx",
         help=(
@@ -38,6 +38,15 @@ def get_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
+        "--transcription-method",
+        type=str,
+        default="openai-whisper",
+        choices=["openai-whisper", "faster-whisper"],
+        help=(
+            "Choose your desired transcript method and which packages you want to use"
+        ),
+    )
+    parser.add_argument(
         "--verbose", action="store_true", help="Print out the evaluation results of each file"
     )
     return parser
@@ -45,7 +54,24 @@ def get_parser() -> argparse.ArgumentParser:
 if __name__ == "__main__":
     args = get_parser().parse_args()
 
-    evaluator = Evaluator(args.model)
+    evaluator = Evaluator(args.model, 
+                          args.transcription_method, 
+                          verbose=args.verbose)
 
     print("Loading Elapsed time: ", str(evaluator.load_model_elapsed_time), " sec")
     print("Using ", evaluator.device)
+
+    wer_result = evaluator.run_evaluation(dataset_path=os.path.abspath(args.reference_path),
+                       audio_dir=os.path.abspath(args.audio_dir))
+    
+    df = read_json(wer_result["json_dataframe"], orient='columns')
+
+    df["average_wer"] = Series(dtype='float64')
+    num_rows = len(df)
+    last_row_index = num_rows - 1
+    df.at[last_row_index, 'average_wer'] = wer_result['Weighted Average WER']
+
+    df.to_excel(os.path.abspath(args.output_dir), engine="openpyxl", index=False)
+
+    print(f"Unweighted Average WER: {wer_result['Unweighted Average WER']}")
+    print(f"Weighted Average WER: {wer_result['Weighted Average WER']}")
