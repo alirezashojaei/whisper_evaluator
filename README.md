@@ -40,12 +40,12 @@ python run_test.py --model MODEL_NAME --audio-dir PATH_TO_AUDIO_FILES --referenc
 
 ### Arguments description:
 
-`--model` (str): Select the Whisper model to use.
-`--audio-dir` (str): Path to the directory containing audio files for transcription.
-`--reference-path` (str): Path to the Excel file containing reference texts.
-`--output-dir` (str): Path to the output Excel file.
-`--transcription-method` (str): Transcribe using ‘openai-whisper’ or the ‘faster-whisper’ package.
-`--verbose` (flag): Enable detailed logs of each file’s evaluation result.
+- `--model` (str): Select the Whisper model to use.
+- `--audio-dir` (str): Path to the directory containing audio files for transcription.
+- `--reference-path` (str): Path to the Excel file containing reference texts.
+- `--output-dir` (str): Path to the output Excel file.
+- `--transcription-method` (str): Transcribe using ‘openai-whisper’ or the ‘faster-whisper’ package.
+- `--verbose` (flag): Enable detailed logs of each file’s evaluation result.
 
 
 Remember to replace placeholders like `MODEL_NAME`, `PATH_TO_AUDIO_FILES`, `PATH_TO_REFERENCE_TEXT`, and `OUTPUT_FILE_PATH` with actual values when running the command.
