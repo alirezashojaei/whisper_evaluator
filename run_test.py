@@ -3,8 +3,7 @@ import os
 
 from pandas import read_json, Series
 
-from model_evaluator.calculate_metrics import Evaluator
-from model_evaluator.utils import available_models
+from model_evaluator.calculate_metric import Evaluator
 
 
 def get_parser() -> argparse.ArgumentParser:
@@ -12,7 +11,6 @@ def get_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--model",
         default="basic",
-        choices=available_models(os.path.abspath('model') if os.path.exists('model') else None),
         help="name of the Whisper model to use",
     )
     parser.add_argument(

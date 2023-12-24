@@ -97,10 +97,10 @@ class Evaluator:
                 reference_text = reference_row["text"].iloc[0]
 
                 if self.method == "openai-whisper": 
-                    result = self.transcribe_openai_whisper(audio=str(audio_path), language="fa")
+                    result = self.transcribe_openai_whisper(audio_path=str(audio_path), language="fa")
 
                 elif self.method == "faster-whisper": 
-                    result = self.transcribe_faster_whisper(audio=str(audio_path), language="fa")
+                    result = self.transcribe_faster_whisper(audio_path=str(audio_path), language="fa")
 
                 else: raise ValueError("'--transcription-method' should be either 'faster-whisper' or 'openai-whisper")
 
