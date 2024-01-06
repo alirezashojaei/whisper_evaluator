@@ -7,6 +7,12 @@ from model_evaluator.calculate_metric import Evaluator
 
 
 def get_parser() -> argparse.ArgumentParser:
+    """
+    The get_parser function is used to create an ArgumentParser object.
+    The ArgumentParser object will be used to parse the command line arguments passed in by the user.
+
+    :return: An argumentparser object
+    """
     parser = argparse.ArgumentParser(description="Calculate evaluation metrics")
     parser.add_argument(
         "--model",
@@ -45,14 +51,20 @@ def get_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
-        "--load-from-check", action="store_true", help="If you want to continue evaluating from a previous checkpoint, set this option."
+        "--load-from-check", action="store_true",
+        help="If you want to continue evaluating from a previous checkpoint, set this option."
     )
     parser.add_argument(
         "--verbose", action="store_true", help="Print out the evaluation results of each file"
     )
     return parser
 
+
 def save_result(result):
+    """
+    The save_result function takes the result of a run and saves it to an Excel file.
+    :param result: Store the result of the function
+    """
     args = get_parser().parse_args()
 
     df = read_json(result["json_dataframe"], orient='columns')
@@ -64,11 +76,15 @@ def save_result(result):
 
     df.to_excel(os.path.abspath(args.output_dir), engine="openpyxl", index=False)
 
+
 def main():
+    """
+    The main function of this module.
+    """
     args = get_parser().parse_args()
 
-    evaluator = Evaluator(args.model, 
-                          args.transcription_method, 
+    evaluator = Evaluator(args.model,
+                          args.transcription_method,
                           verbose=args.verbose,
                           load_from_checkpoint=args.load_from_check)
 
@@ -76,8 +92,8 @@ def main():
     print("Using ", evaluator.device)
 
     wer_result = evaluator.run_evaluation(dataset_path=os.path.abspath(args.reference_path),
-                       audio_dir=os.path.abspath(args.audio_dir))
-    
+                                          audio_dir=os.path.abspath(args.audio_dir))
+
     save_result(wer_result)
 
     print(f"Unweighted Average WER: {wer_result['Unweighted Average WER']}")
