@@ -49,6 +49,18 @@ def get_parser() -> argparse.ArgumentParser:
     )
     return parser
 
+def save_result(result):
+    args = get_parser().parse_args()
+
+    df = read_json(result["json_dataframe"], orient='columns')
+
+    df["average_wer"] = Series(dtype='float64')
+    num_rows = len(df)
+    last_row_index = num_rows - 1
+    df.at[last_row_index, 'average_wer'] = result['Weighted Average WER']
+
+    df.to_excel(os.path.abspath(args.output_dir), engine="openpyxl", index=False)
+
 def main():
     args = get_parser().parse_args()
 
@@ -62,14 +74,7 @@ def main():
     wer_result = evaluator.run_evaluation(dataset_path=os.path.abspath(args.reference_path),
                        audio_dir=os.path.abspath(args.audio_dir))
     
-    df = read_json(wer_result["json_dataframe"], orient='columns')
-
-    df["average_wer"] = Series(dtype='float64')
-    num_rows = len(df)
-    last_row_index = num_rows - 1
-    df.at[last_row_index, 'average_wer'] = wer_result['Weighted Average WER']
-
-    df.to_excel(os.path.abspath(args.output_dir), engine="openpyxl", index=False)
+    save_result(wer_result)
 
     print(f"Unweighted Average WER: {wer_result['Unweighted Average WER']}")
     print(f"Weighted Average WER: {wer_result['Weighted Average WER']}")
