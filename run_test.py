@@ -49,7 +49,7 @@ def get_parser() -> argparse.ArgumentParser:
     )
     return parser
 
-if __name__ == "__main__":
+def main():
     args = get_parser().parse_args()
 
     evaluator = Evaluator(args.model, 
@@ -73,3 +73,7 @@ if __name__ == "__main__":
 
     print(f"Unweighted Average WER: {wer_result['Unweighted Average WER']}")
     print(f"Weighted Average WER: {wer_result['Weighted Average WER']}")
+
+
+if __name__ == "__main__":
+    main()
