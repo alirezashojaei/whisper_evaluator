@@ -45,6 +45,9 @@ def get_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
+        "--load-from-check", action="store_true", help="If you want to continue evaluating from a previous checkpoint, set this option."
+    )
+    parser.add_argument(
         "--verbose", action="store_true", help="Print out the evaluation results of each file"
     )
     return parser
@@ -66,7 +69,8 @@ def main():
 
     evaluator = Evaluator(args.model, 
                           args.transcription_method, 
-                          verbose=args.verbose)
+                          verbose=args.verbose,
+                          load_from_checkpoint=args.load_from_check)
 
     print("Loading Elapsed time: ", str(evaluator.load_model_elapsed_time), " sec")
     print("Using ", evaluator.device)

@@ -240,3 +240,5 @@ result/
 .DS_Store
 *.xlsx
 *.wav
+# checkpoint file
+*.p
