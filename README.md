@@ -35,7 +35,7 @@ pip install pandas torch whisper faster_whisper evaluate tqdm arabic_reshaper py
 Run the script from the command line with the desired arguments:
 
 ```sh
-python run_test.py --model MODEL_NAME --audio-dir PATH_TO_AUDIO_FILES --reference-path PATH_TO_REFERENCE_TEXT --output-dir OUTPUT_FILE_PATH --transcription-method TRANSCRIPTION_METHOD [--verbose]
+python run_test.py --model MODEL_NAME --audio-dir PATH_TO_AUDIO_FILES --reference-path PATH_TO_REFERENCE_TEXT --output-dir OUTPUT_FILE_PATH --transcription-method TRANSCRIPTION_METHOD [--verbose] [--load-from-checkpoint]
 ```
 
 ### Arguments description:
@@ -45,6 +45,7 @@ python run_test.py --model MODEL_NAME --audio-dir PATH_TO_AUDIO_FILES --referenc
 - `--reference-path` (str): Path to the Excel file containing reference texts.
 - `--output-dir` (str): Path to the output Excel file.
 - `--transcription-method` (str): Transcribe using ‘openai-whisper’ or the ‘faster-whisper’ package.
+- `--load-from-checkpoint` (flag): Continue evaluating from a previous checkpoint.
 - `--verbose` (flag): Enable detailed logs of each file’s evaluation result.
 
 
